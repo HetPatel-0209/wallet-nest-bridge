@@ -46,6 +46,15 @@ export const networks: BlockchainNetwork[] = [
     rpcUrl: "https://rpc.sweateconomy.com",
     active: false,
   },
+  {
+    id: "dojima",
+    name: "Dojima",
+    symbol: "DOJ",
+    icon: "🌊",
+    chainId: "8",
+    rpcUrl: "https://api.dojima.network/",
+    active: false,
+  },
 ];
 
 export const wallet: Wallet = {
@@ -118,4 +127,41 @@ export const generateSeedPhrase = (wordCount: number = 12): string[] => {
     seedPhrase.push(seedPhraseWords[randomIndex]);
   }
   return seedPhrase;
+};
+
+// Function to simulate fetching network data from an API
+export const fetchNetworksData = async (): Promise<BlockchainNetwork[]> => {
+  // In a real implementation, this would be an API call
+  // For now, we'll simulate a network delay and return our static data
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(networks);
+    }, 800);
+  });
+};
+
+// Function to simulate fetching wallet balance
+export const fetchWalletBalance = async (
+  address: string, 
+  networkId: string
+): Promise<number> => {
+  // In a real implementation, this would be an API call to the blockchain
+  // For demonstration, we'll return different balances based on the network
+  return new Promise((resolve) => {
+    const networkMultipliers: Record<string, number> = {
+      ethereum: 1,
+      binance: 5.2,
+      polygon: 421.5,
+      solana: 12.8,
+      sweat: 2500,
+      dojima: 180.3
+    };
+    
+    const multiplier = networkMultipliers[networkId] || 1;
+    const baseBalance = 2.5438;
+    
+    setTimeout(() => {
+      resolve(baseBalance * multiplier);
+    }, 600);
+  });
 };

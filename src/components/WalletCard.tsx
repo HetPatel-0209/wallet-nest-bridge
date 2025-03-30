@@ -1,9 +1,10 @@
 
 import { useWallet } from "@/context/WalletContext";
-import { CopyIcon, ExternalLinkIcon, WalletIcon } from "lucide-react";
+import { CopyIcon, ExternalLinkIcon, RefreshCwIcon, WalletIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function WalletCard() {
-  const { wallet, currentNetwork } = useWallet();
+  const { wallet, currentNetwork, isLoading, refreshBalance } = useWallet();
   
   if (!wallet) return null;
 
@@ -13,6 +14,10 @@ export default function WalletCard() {
 
   const copyAddress = () => {
     navigator.clipboard.writeText(wallet.address);
+  };
+
+  const handleRefresh = async () => {
+    await refreshBalance();
   };
 
   return (
@@ -54,10 +59,31 @@ export default function WalletCard() {
         </div>
         
         <div>
-          <p className="text-sm text-white/70 mb-1">Balance</p>
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-sm text-white/70">Balance</p>
+            <Button
+              onClick={handleRefresh}
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 text-white/70 hover:text-white hover:bg-white/10"
+              disabled={isLoading}
+              title="Refresh balance"
+            >
+              <RefreshCwIcon size={14} className={isLoading ? "animate-spin" : ""} />
+            </Button>
+          </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold">{wallet.balance} {currentNetwork.symbol}</p>
-            <p className="text-md text-white/70">₹{balanceInRupees.toLocaleString('en-IN')}</p>
+            {isLoading ? (
+              <div className="flex flex-col gap-2">
+                <div className="h-7 w-2/3 bg-white/10 animate-pulse rounded"></div>
+                <div className="h-5 w-1/2 bg-white/10 animate-pulse rounded"></div>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{wallet.balance.toFixed(4)} {currentNetwork.symbol}</p>
+                <p className="text-md text-white/70">₹{balanceInRupees.toLocaleString('en-IN')}</p>
+              </>
+            )}
           </div>
         </div>
       </div>

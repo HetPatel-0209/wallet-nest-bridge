@@ -1,10 +1,10 @@
 
 import { useWallet } from "@/context/WalletContext";
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 
 export default function NetworkSelector() {
-  const { currentNetwork, networks, switchNetwork } = useWallet();
+  const { currentNetwork, networks, switchNetwork, isLoading } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -12,8 +12,13 @@ export default function NetworkSelector() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+        disabled={isLoading}
       >
-        <span className="text-lg">{currentNetwork.icon}</span>
+        {isLoading ? (
+          <Loader2Icon size={16} className="animate-spin mr-1" />
+        ) : (
+          <span className="text-lg">{currentNetwork.icon}</span>
+        )}
         <span className="font-medium text-sm">{currentNetwork.name}</span>
         <ChevronDownIcon size={16} />
       </button>
@@ -29,6 +34,7 @@ export default function NetworkSelector() {
                   switchNetwork(network.id);
                   setIsOpen(false);
                 }}
+                disabled={isLoading}
               >
                 <div className="flex items-center gap-2">
                   <span className="text-lg">{network.icon}</span>
