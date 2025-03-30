@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { networks, transactions, wallet as dummyWallet } from "@/lib/dummy-data";
 import { BlockchainNetwork, Transaction, Wallet } from "@/lib/types";
@@ -13,7 +12,7 @@ interface WalletContextProps {
   seedPhrase: string[] | null;
   createWallet: (password: string) => void;
   accessWallet: (password: string) => void;
-  importWallet: (seedPhrase: string, password: string) => void;
+  importWallet: (privateKey: string, password: string) => void;
   logout: () => void;
   switchNetwork: (networkId: string) => void;
   sendTransaction: (to: string, amount: number) => void;
@@ -59,10 +58,30 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const importWallet = (seedPhraseStr: string, password: string) => {
-    // In a real app, we would import the wallet using the seed phrase
-    // For now, we'll just simulate it
-    setWallet(dummyWallet);
+  const importWallet = (privateKey: string, password: string) => {
+    // In a real app, we would import the wallet using the private key
+    // For now, we'll just simulate it with dummy data
+    // In a production app, this would use a library like ethers.js to
+    // derive the wallet from the private key
+    
+    if (!privateKey.startsWith("0x") || privateKey.length !== 66) {
+      toast({
+        title: "Invalid Private Key",
+        description: "Please enter a valid private key",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Simulate deriving wallet from private key
+    const importedWallet = {
+      ...dummyWallet,
+      name: "Imported Wallet",
+      // In a real implementation, we would derive the address from the private key
+      address: `0x${privateKey.substring(6, 46)}`,
+    };
+    
+    setWallet(importedWallet);
     setIsAuthenticated(true);
     setSeedPhrase(null);
     

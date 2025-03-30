@@ -1,4 +1,3 @@
-
 import { BlockchainNetwork, Transaction, Wallet } from "./types";
 
 export const networks: BlockchainNetwork[] = [
@@ -36,6 +35,15 @@ export const networks: BlockchainNetwork[] = [
     icon: "🟪",
     chainId: "1",
     rpcUrl: "https://api.mainnet-beta.solana.com",
+    active: false,
+  },
+  {
+    id: "sweat",
+    name: "SWEAT",
+    symbol: "SWEAT",
+    icon: "💧",
+    chainId: "73772",
+    rpcUrl: "https://rpc.sweateconomy.com",
     active: false,
   },
 ];

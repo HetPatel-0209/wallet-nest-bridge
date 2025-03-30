@@ -11,7 +11,7 @@ const WalletAccess = () => {
   const { createWallet, accessWallet, importWallet } = useWallet();
   const [action, setAction] = useState<WalletAction>("access");
   const [password, setPassword] = useState("");
-  const [seedPhrase, setSeedPhrase] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,7 +24,7 @@ const WalletAccess = () => {
       accessWallet(password);
       navigate("/portfolio");
     } else if (action === "import") {
-      importWallet(seedPhrase, password);
+      importWallet(privateKey, password);
       navigate("/portfolio");
     }
   };
@@ -106,16 +106,16 @@ const WalletAccess = () => {
           {action === "import" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Seed Phrase</label>
-                <textarea
-                  className="w-full border border-input bg-background h-24 px-3 py-2 rounded-md"
-                  value={seedPhrase}
-                  onChange={(e) => setSeedPhrase(e.target.value)}
-                  placeholder="Enter your 12-word recovery phrase"
+                <label className="text-sm font-medium">Private Key</label>
+                <Input
+                  type="password"
+                  value={privateKey}
+                  onChange={(e) => setPrivateKey(e.target.value)}
+                  placeholder="Enter your private key"
                   required
                 />
                 <p className="text-xs text-muted-foreground">
-                  Enter your recovery phrase, separated by spaces
+                  Enter your wallet's private key (64 characters with 0x prefix)
                 </p>
               </div>
               <div className="space-y-2">
@@ -161,7 +161,7 @@ const WalletAccess = () => {
       </div>
 
       <p className="text-center text-sm text-muted-foreground">
-        Your keys, your crypto. Keep your seed phrase safe.
+        Your keys, your crypto. Keep your private key safe.
       </p>
     </div>
   );
